@@ -38,6 +38,7 @@ public class oiii extends javax.swing.JFrame {
         cadastroTelefone = new javax.swing.JFormattedTextField();
         cadastroDataNasc = new javax.swing.JFormattedTextField();
         botaoConfirmar = new javax.swing.JButton();
+        cadastroNome1 = new javax.swing.JTextField();
 
         cadastroNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +101,12 @@ public class oiii extends javax.swing.JFrame {
             }
         });
 
+        cadastroNome1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastroNome1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,7 +133,10 @@ public class oiii extends javax.swing.JFrame {
                             .addComponent(cadastroDataNasc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cadastroTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -135,7 +145,9 @@ public class oiii extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(24, 24, 24)
                 .addComponent(jLabel2)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cadastroDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,7 +187,7 @@ public class oiii extends javax.swing.JFrame {
         //Cria o novo objeto, do tipo aluno
         Aluno feedado = new Aluno();
         //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
-        feedado.setNome(cadastroNome.getText());
+        feedado.setNome(cadastroNome1.getText());
         feedado.setCpf(cadastroCPF.getText());
         feedado.setDataNasc(cadastroDataNasc.getText());
         feedado.setTelefone(cadastroTelefone.getText());
@@ -184,6 +196,10 @@ public class oiii extends javax.swing.JFrame {
         feedado.setIdade(feedado.getDataNasc());
         JOptionPane.showMessageDialog(null, "Nome: " + feedado.getNome());
     }//GEN-LAST:event_botaoConfirmarActionPerformed
+
+    private void cadastroNome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNome1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cadastroNome1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,6 +241,7 @@ public class oiii extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField cadastroCPF;
     private javax.swing.JFormattedTextField cadastroDataNasc;
     private javax.swing.JTextField cadastroNome;
+    private javax.swing.JTextField cadastroNome1;
     private javax.swing.JFormattedTextField cadastroTelefone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
