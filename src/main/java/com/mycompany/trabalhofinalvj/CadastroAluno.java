@@ -4,7 +4,12 @@
  */
 package com.mycompany.trabalhofinalvj;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 /**
  *
  * @author franc
@@ -12,13 +17,19 @@ import java.util.*;
 public class CadastroAluno extends javax.swing.JFrame {
     int cont = 0;
     private List<Aluno> listaAlunos;
+    private final SimpleDateFormat dataAjustada = new SimpleDateFormat("dd/MM/yyyy");
+    
     /**
      * Creates new form oiii
      */
+    //construtor
     public CadastroAluno() {
         initComponents();
         this.listaAlunos = new ArrayList<>();
+        configTabela();
+        preencheTabela();
     }
+    //f.verificacaoAlunoNaLista
     public Aluno verificarAluno(int matBusca){
         Aluno alunoEncontrado = null;
         for(Aluno aluno : this.listaAlunos){
@@ -29,8 +40,63 @@ public class CadastroAluno extends javax.swing.JFrame {
         }
         return alunoEncontrado;
     }
-   
+    //funcao que configura a tabela
+    private void configTabela(){
+        //pega o modelo tabelaAlunos
+        DefaultTableModel modelo = (DefaultTableModel) tabelaAlunos.getModel();
+        
+        //cria array de nomes e coloca elas como o nome das colunas
+        String[] nomeColunas = {"Matrícula","Nome","Idade","DataNasc","CPF"};
+        modelo.setColumnIdentifiers(nomeColunas);
+        modelo.setRowCount(0);//inicia tabela vazia
+    }
+    //f.preenche a tabela
+    private void preencheTabela(){
+        //novamente pega o modelo tabelaAlunos
+        DefaultTableModel modelo = (DefaultTableModel) tabelaAlunos.getModel();
+        modelo.setRowCount(0); //zera a quantidade de linhas para evitar que o mesmo dado seja mostrado várias vezes
+        //Define o padrão desejado
+        //itera dentro da lista de Alunos
+        for(Aluno aluno : this.listaAlunos){
+            //ajusta a data nascimento para o padrão anteriormente "setado"
+            String dataNascFormatada;
+            if(aluno.getDataNasc() != null){
+                dataNascFormatada = dataAjustada.format(aluno.getDataNasc());
+            }else{
+                dataNascFormatada = "";
+            }
+            
+            //cria uma array de objetos para adicionar na tabela
+            Object[] dadosLinha = new Object[]{
+                aluno.getMatricula(),
+                aluno.getNome(),
+                aluno.getIdade(),
+                dataNascFormatada,
+                aluno.getCpf()
+            };
+            //adiciona a linha com base no array dadosLinha
+            modelo.addRow(dadosLinha);
+        }
+        
+        
+        
+    }
     
+    private void salvarCSV(Aluno aluno){
+        try(FileWriter fw = new FileWriter("ListagemAlunos.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw))
+        {
+            String dataFormatada = aluno.getDataNasc() != null ? dataAjustada.format(aluno.getDataNasc()) : "";
+            String linha = cont + "- Matrícula: " + aluno.getMatricula() + ", Nome: " + aluno.getNome() + ", Idade: " +aluno.getIdade() + ", Data Nasc.: " +dataFormatada + ", CPF: " + aluno.getCpf();
+            bw.write(linha);
+            bw.newLine();
+            JOptionPane.showMessageDialog(this,"Dado salvo no arquivo com sucesso!");
+        }catch(IOException e){
+            JOptionPane.showMessageDialog(this,"Erro!");
+        }
+        
+
+    }
     /**S
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +106,6 @@ public class CadastroAluno extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cadastroNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -53,12 +118,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         cadastroNome1 = new javax.swing.JTextField();
         botaoBuscar = new javax.swing.JButton();
         botaoIdade = new javax.swing.JButton();
-
-        cadastroNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastroNomeActionPerformed(evt);
-            }
-        });
+        sPane = new javax.swing.JScrollPane();
+        tabelaAlunos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,41 +196,68 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoInserir.setText("Inserir Em...");
+        botaoInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoInserirActionPerformed(evt);
+            }
+        });
+
+        tabelaAlunos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        sPane.setViewportView(tabelaAlunos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 95, Short.MAX_VALUE)
-                .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botaoIdade)
-                .addGap(8, 8, 8))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cadastroDataNasc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cadastroTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(173, 173, 173)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoIdade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoInserir)))
+                        .addGap(0, 101, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cadastroDataNasc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cadastroTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(sPane)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,8 +283,11 @@ public class CadastroAluno extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoConfirmar)
                     .addComponent(botaoBuscar)
-                    .addComponent(botaoIdade))
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(botaoIdade)
+                    .addComponent(botaoInserir))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -209,10 +300,6 @@ public class CadastroAluno extends javax.swing.JFrame {
     private void cadastroTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cadastroTelefoneActionPerformed
-
-    private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void cadastroDataNascActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroDataNascActionPerformed
         // TODO add your handling code here:
@@ -229,19 +316,20 @@ public class CadastroAluno extends javax.swing.JFrame {
         novoAluno.setMatricula((cont+1034));
         cont++;
         
-        
         novoAluno.setIdade(novoAluno.getDataNasc());
         //verifica se a data está no formato correto e informa ao usuário
         if (novoAluno.getDataNasc() == null){
-            JOptionPane.showMessageDialog(null,"Dados inválidos, recadastre");
+            JOptionPane.showMessageDialog(this,"Dados inválidos, recadastre");
         }
         if(this.listaAlunos.contains(novoAluno)){
-            JOptionPane.showMessageDialog(null,"Aluno já cadastrado");
+            JOptionPane.showMessageDialog(this,"Aluno já cadastrado");
         }
         else{
            listaAlunos.add(novoAluno);
-           JOptionPane.showMessageDialog(null,"Aluno inserido corretamente");
+           JOptionPane.showMessageDialog(this,"Aluno inserido corretamente");
+           salvarCSV(novoAluno);
         }
+        preencheTabela();
         //responsável por limpar os campos após a coleta de dados do aluno.
         cadastroNome1.setText("");
         cadastroCPF.setText("");
@@ -255,7 +343,10 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNome1ActionPerformed
 
     private void botaoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBuscarActionPerformed
-        String matriculaDigitada = JOptionPane.showInputDialog(null, "A sua pergunta aqui");
+        //cria a caixa responsável por capturar a matrícula que será pesquisada.
+        
+        //Será utlizado JOptionPane.showInputDialog com 4 parâmetros,this(p centralizar a caixa no centro do programa ao inves no centro da tela(null)),texto p/Usuário, nome da caixa e o desenho que aparecerá será nenhum, se quisermos por interrogacao, possamos usar QUESTION_MESSAGE;
+        String matriculaDigitada = JOptionPane.showInputDialog(this, "Digite a matrícula do aluno: ","Buscar aluno P/Matrícula",JOptionPane.PLAIN_MESSAGE);
         Aluno alunoEncontrado = verificarAluno(Integer.parseInt(matriculaDigitada.trim()));
         if(alunoEncontrado != null){
             JOptionPane.showMessageDialog(null,"Aluno encontrado: \n Nome: " + alunoEncontrado.getNome() + "\n CPF: " + alunoEncontrado.getCpf()+ "\n Telefone: " + alunoEncontrado.getTelefone());
@@ -270,12 +361,53 @@ public class CadastroAluno extends javax.swing.JFrame {
         if (!this.listaAlunos.isEmpty()){
             Aluno maisNovo = Collections.min(this.listaAlunos, Comparator.comparingInt(Aluno::getIdade));
             Aluno maisVelho = Collections.max(this.listaAlunos, Comparator.comparingInt(Aluno::getIdade));
-            JOptionPane.showMessageDialog(null,"Aluno mais novo: \n Nome: " + maisNovo.getNome() + "\n CPF: " + maisNovo.getCpf()+ "\n Telefone: " + maisNovo.getTelefone());
-            JOptionPane.showMessageDialog(null,"Aluno mais velho: \n Nome: " + maisVelho.getNome() + "\n CPF: " + maisVelho.getCpf()+ "\n Telefone: " + maisVelho.getTelefone());
+            JOptionPane.showMessageDialog(this,"Aluno mais novo: \n Nome: " + maisNovo.getNome() + "\n CPF: " + maisNovo.getCpf()+ "\n Telefone: " + maisNovo.getTelefone());
+            JOptionPane.showMessageDialog(this,"Aluno mais velho: \n Nome: " + maisVelho.getNome() + "\n CPF: " + maisVelho.getCpf()+ "\n Telefone: " + maisVelho.getTelefone());
         }
         
          
     }//GEN-LAST:event_botaoIdadeActionPerformed
+
+    private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
+        //Se possível transformar o IF em uma funcao e chamar no botaoConfirmar e botaoInserir
+        String matriculaBusca = JOptionPane.showInputDialog(this,"Qual posição você deseja inserir o aluno?","Inserir aluno",JOptionPane.PLAIN_MESSAGE);
+        int posicao = Integer.parseInt(matriculaBusca.trim());
+        if (posicao >= 0 && posicao <= this.listaAlunos.size()){
+            Aluno novoAluno = new Aluno();
+            //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
+            novoAluno.setNome(cadastroNome1.getText());
+            novoAluno.setCpf(cadastroCPF.getText());
+            novoAluno.setDataNasc(cadastroDataNasc.getText());
+            novoAluno.setTelefone(cadastroTelefone.getText());
+            novoAluno.setMatricula((cont+1034));
+            cont++;
+            
+
+
+            novoAluno.setIdade(novoAluno.getDataNasc());
+            //verifica se a data está no formato correto e informa ao usuário
+            if (novoAluno.getDataNasc() == null){
+                JOptionPane.showMessageDialog(this,"Dados inválidos, recadastre");
+            }
+            if(this.listaAlunos.contains(novoAluno)){
+                JOptionPane.showMessageDialog(this,"Aluno já cadastrado");
+            }
+            else{
+               listaAlunos.add(posicao,novoAluno);
+               JOptionPane.showMessageDialog(this,"Aluno inserido corretamente");
+               salvarCSV(novoAluno);
+            }
+            preencheTabela();
+            //responsável por limpar os campos após a coleta de dados do aluno.
+            cadastroNome1.setText("");
+            cadastroCPF.setText("");
+            cadastroDataNasc.setText("");
+            cadastroTelefone.setText("");
+        }else{
+            JOptionPane.showMessageDialog(this,"Posição Inválida!");
+        }
+        
+    }//GEN-LAST:event_botaoInserirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,9 +449,9 @@ public class CadastroAluno extends javax.swing.JFrame {
     private javax.swing.JButton botaoBuscar;
     private javax.swing.JButton botaoConfirmar;
     private javax.swing.JButton botaoIdade;
+    private javax.swing.JButton botaoInserir;
     private javax.swing.JFormattedTextField cadastroCPF;
     private javax.swing.JFormattedTextField cadastroDataNasc;
-    private javax.swing.JTextField cadastroNome;
     private javax.swing.JTextField cadastroNome1;
     private javax.swing.JFormattedTextField cadastroTelefone;
     private javax.swing.JLabel jLabel1;
@@ -327,5 +459,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane sPane;
+    private javax.swing.JTable tabelaAlunos;
     // End of variables declaration//GEN-END:variables
 }
