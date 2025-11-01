@@ -9,16 +9,17 @@ import java.util.*;
  *
  * @author franc
  */
-public class oiii extends javax.swing.JFrame {
+public class CadastroAluno extends javax.swing.JFrame {
     int cont = 0;
     private List<Aluno> listaAlunos;
     /**
      * Creates new form oiii
      */
-    public oiii() {
+    public CadastroAluno() {
         initComponents();
+        this.listaAlunos = new ArrayList<>();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,16 +186,29 @@ public class oiii extends javax.swing.JFrame {
 
     private void botaoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConfirmarActionPerformed
         //Cria o novo objeto, do tipo aluno
-        Aluno feedado = new Aluno();
+        Aluno novoAluno = new Aluno();
         //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
-        feedado.setNome(cadastroNome1.getText());
-        feedado.setCpf(cadastroCPF.getText());
-        feedado.setDataNasc(cadastroDataNasc.getText());
-        feedado.setTelefone(cadastroTelefone.getText());
-        feedado.setMatricula((cont+1034));
+        novoAluno.setNome(cadastroNome1.getText());
+        novoAluno.setCpf(cadastroCPF.getText());
+        novoAluno.setDataNasc(cadastroDataNasc.getText());
+        novoAluno.setTelefone(cadastroTelefone.getText());
+        novoAluno.setMatricula((1034));
         cont++;
-        feedado.setIdade(feedado.getDataNasc());
-        JOptionPane.showMessageDialog(null, "Nome: " + feedado.getNome());
+        
+        novoAluno.setIdade(novoAluno.getDataNasc());
+        //verifica se a data está no formato correto e informa ao usuário
+        if (novoAluno.getDataNasc()==null){
+            JOptionPane.showMessageDialog(null,"Dados inválidos, recadastre");
+        }
+        if(this.listaAlunos.contains(novoAluno)){
+            JOptionPane.showMessageDialog(null,"Aluno já cadastrado");
+        }
+        else{
+           listaAlunos.add(novoAluno);
+           JOptionPane.showMessageDialog(null,"Aluno inserido corretamente");
+        }
+        
+        
     }//GEN-LAST:event_botaoConfirmarActionPerformed
 
     private void cadastroNome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNome1ActionPerformed
@@ -218,20 +232,21 @@ public class oiii extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(oiii.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(oiii.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(oiii.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(oiii.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new oiii().setVisible(true);
+                new CadastroAluno().setVisible(true);
             }
         });
     }
