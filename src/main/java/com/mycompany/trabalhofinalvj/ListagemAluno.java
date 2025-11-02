@@ -19,9 +19,13 @@ public class ListagemAluno extends javax.swing.JFrame {
      */
     private List<Aluno> listaDeAlunos;
     int cont1 = 0;
+    //construtor 
     public ListagemAluno(List<Aluno> listaParaExibir) {
+        //passaas funções ao criar o obj
         initComponents();
+        //atributo lista do obj
         this.listaDeAlunos = listaParaExibir;
+        //escreve na tela os itens dentro da lista
         preencheListagem(listaParaExibir);
         this.setTitle("Lista alunos");
     }
@@ -35,6 +39,7 @@ public class ListagemAluno extends javax.swing.JFrame {
         sb.append("---------Lista de alunos --------- \n");
         sb.append("==================================\n\n");
         if(lista != null){
+            //percorre toda lista de alun e pões ela no sb
             for(Aluno aluno: lista){
                 sb.append(cont1+aluno.getMatricula()).append("\n");
                 sb.append(aluno.getNome()).append("\n");
@@ -42,6 +47,7 @@ public class ListagemAluno extends javax.swing.JFrame {
         }else{
             sb.append("Não há lista");
         }
+        //coloca a StringBuilder sb  na tela
         txtListagem.setText(sb.toString());
         txtListagem.setCaretPosition(0);
     }
@@ -70,9 +76,9 @@ public class ListagemAluno extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(79, 79, 79)
+                .addGap(74, 74, 74)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

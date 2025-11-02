@@ -26,7 +26,9 @@ public class CadastroAluno extends javax.swing.JFrame {
     public CadastroAluno() {
         initComponents();
         this.listaAlunos = new ArrayList<>();
+        //gera a tabela
         configTabela();
+        //intera na lista e preenche
         preencheTabela();
     }
     //f.verificacaoAlunoNaLista
@@ -422,6 +424,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoInserirActionPerformed
 
     private void botaoListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoListaActionPerformed
+        //chama  atela 
         ListagemAluno telaLista = new ListagemAluno(this.listaAlunos);
         telaLista.setVisible(true);
         telaLista.setLocationRelativeTo(this);
