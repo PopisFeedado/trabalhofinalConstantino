@@ -118,8 +118,10 @@ public class CadastroAluno extends javax.swing.JFrame {
         cadastroNome1 = new javax.swing.JTextField();
         botaoBuscar = new javax.swing.JButton();
         botaoIdade = new javax.swing.JButton();
+        botaoInserir = new javax.swing.JButton();
         sPane = new javax.swing.JScrollPane();
         tabelaAlunos = new javax.swing.JTable();
+        botaoLista = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -216,6 +218,13 @@ public class CadastroAluno extends javax.swing.JFrame {
         ));
         sPane.setViewportView(tabelaAlunos);
 
+        botaoLista.setText("Listagem");
+        botaoLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoListaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -243,20 +252,22 @@ public class CadastroAluno extends javax.swing.JFrame {
                                 .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(173, 173, 173)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoIdade)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoInserir)))
-                        .addGap(0, 101, Short.MAX_VALUE))
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(sPane)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(botaoIdade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botaoInserir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botaoLista)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -284,7 +295,8 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addComponent(botaoConfirmar)
                     .addComponent(botaoBuscar)
                     .addComponent(botaoIdade)
-                    .addComponent(botaoInserir))
+                    .addComponent(botaoInserir)
+                    .addComponent(botaoLista))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                 .addContainerGap())
@@ -409,6 +421,12 @@ public class CadastroAluno extends javax.swing.JFrame {
         
     }//GEN-LAST:event_botaoInserirActionPerformed
 
+    private void botaoListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoListaActionPerformed
+        ListagemAluno telaLista = new ListagemAluno(this.listaAlunos);
+        telaLista.setVisible(true);
+        telaLista.setLocationRelativeTo(this);
+    }//GEN-LAST:event_botaoListaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -450,6 +468,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private javax.swing.JButton botaoConfirmar;
     private javax.swing.JButton botaoIdade;
     private javax.swing.JButton botaoInserir;
+    private javax.swing.JButton botaoLista;
     private javax.swing.JFormattedTextField cadastroCPF;
     private javax.swing.JFormattedTextField cadastroDataNasc;
     private javax.swing.JTextField cadastroNome1;
