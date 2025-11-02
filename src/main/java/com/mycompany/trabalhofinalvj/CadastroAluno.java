@@ -84,21 +84,34 @@ public class CadastroAluno extends javax.swing.JFrame {
         
     }
     
-    private void salvarCSV(Aluno aluno){
-        try(FileWriter fw = new FileWriter("ListagemAlunos.txt", true);
+    private void salvarCSV(List<Aluno> lista){
+        try(FileWriter fw = new FileWriter("ListagemAlunos.txt", false);
             BufferedWriter bw = new BufferedWriter(fw))
         {
-            String dataFormatada = aluno.getDataNasc() != null ? dataAjustada.format(aluno.getDataNasc()) : "";
-            String linha = cont + "- Matrícula: " + aluno.getMatricula() + ", Nome: " + aluno.getNome() + ", Idade: " +aluno.getIdade() + ", Data Nasc.: " +dataFormatada + ", CPF: " + aluno.getCpf();
-            bw.write(linha);
-            bw.newLine();
-            JOptionPane.showMessageDialog(this,"Dado salvo no arquivo com sucesso!");
+            for (Aluno aluno: listaAlunos){
+                String dataFormatada = aluno.getDataNasc() != null ? dataAjustada.format(aluno.getDataNasc()) : "";
+                String linha = cont + "," + aluno.getMatricula() + "," + aluno.getNome() + "," +aluno.getIdade() + "," +dataFormatada + "," + aluno.getCpf();
+                cont++;
+                bw.write(linha);
+                bw.newLine();
+            }
+            JOptionPane.showMessageDialog(this,"Dados salvo no arquivo com sucesso!");
         }catch(IOException e){
             JOptionPane.showMessageDialog(this,"Erro!");
         }
-        
-
     }
+    
+    public static Aluno adicionarAluno(String nomeAluno, String cpfAluno, String dataNascAluno, String foneAluno, String matAluno){
+        Aluno novoAluno = new Aluno();
+        //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
+        novoAluno.setNome(nomeAluno);
+        novoAluno.setCpf(cpfAluno);
+        novoAluno.setDataNasc(dataNascAluno);
+        novoAluno.setTelefone(foneAluno);
+        novoAluno.setMatricula(Integer.parseInt(matAluno.trim()));
+        return novoAluno;
+    }
+    
     /**S
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,6 +137,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         sPane = new javax.swing.JScrollPane();
         tabelaAlunos = new javax.swing.JTable();
         botaoLista = new javax.swing.JButton();
+        cadastroMatricula = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -227,6 +242,14 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        cadastroMatricula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastroMatriculaActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Matricula");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -246,9 +269,9 @@ public class CadastroAluno extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cadastroDataNasc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cadastroTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING)))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -259,24 +282,29 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+                            .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(botaoIdade)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botaoInserir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botaoLista)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botaoIdade)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botaoInserir)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botaoLista))
+                                    .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(24, 24, 24)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -292,7 +320,11 @@ public class CadastroAluno extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cadastroCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoConfirmar)
                     .addComponent(botaoBuscar)
@@ -300,7 +332,7 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addComponent(botaoInserir)
                     .addComponent(botaoLista))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addComponent(sPane, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -322,14 +354,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private void botaoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConfirmarActionPerformed
         //Cria o novo objeto, do tipo aluno
         Aluno novoAluno = new Aluno();
-        //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
-        novoAluno.setNome(cadastroNome1.getText());
-        novoAluno.setCpf(cadastroCPF.getText());
-        novoAluno.setDataNasc(cadastroDataNasc.getText());
-        novoAluno.setTelefone(cadastroTelefone.getText());
-        novoAluno.setMatricula((cont+1034));
-        cont++;
-        
+        novoAluno = adicionarAluno(cadastroNome1.getText(),cadastroCPF.getText(),cadastroDataNasc.getText(),cadastroTelefone.getText(),cadastroMatricula.getText());
         novoAluno.setIdade(novoAluno.getDataNasc());
         //verifica se a data está no formato correto e informa ao usuário
         if (novoAluno.getDataNasc() == null){
@@ -341,7 +366,6 @@ public class CadastroAluno extends javax.swing.JFrame {
         else{
            listaAlunos.add(novoAluno);
            JOptionPane.showMessageDialog(this,"Aluno inserido corretamente");
-           salvarCSV(novoAluno);
         }
         preencheTabela();
         //responsável por limpar os campos após a coleta de dados do aluno.
@@ -388,16 +412,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         int posicao = Integer.parseInt(matriculaBusca.trim());
         if (posicao >= 0 && posicao <= this.listaAlunos.size()){
             Aluno novoAluno = new Aluno();
-            //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
-            novoAluno.setNome(cadastroNome1.getText());
-            novoAluno.setCpf(cadastroCPF.getText());
-            novoAluno.setDataNasc(cadastroDataNasc.getText());
-            novoAluno.setTelefone(cadastroTelefone.getText());
-            novoAluno.setMatricula((cont+1034));
-            cont++;
-            
-
-
+            novoAluno = adicionarAluno(cadastroNome1.getText(),cadastroCPF.getText(),cadastroDataNasc.getText(),cadastroTelefone.getText(),cadastroMatricula.getText());
             novoAluno.setIdade(novoAluno.getDataNasc());
             //verifica se a data está no formato correto e informa ao usuário
             if (novoAluno.getDataNasc() == null){
@@ -409,7 +424,6 @@ public class CadastroAluno extends javax.swing.JFrame {
             else{
                listaAlunos.add(posicao,novoAluno);
                JOptionPane.showMessageDialog(this,"Aluno inserido corretamente");
-               salvarCSV(novoAluno);
             }
             preencheTabela();
             //responsável por limpar os campos após a coleta de dados do aluno.
@@ -425,10 +439,15 @@ public class CadastroAluno extends javax.swing.JFrame {
 
     private void botaoListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoListaActionPerformed
         //chama  atela 
+        salvarCSV(this.listaAlunos);
         ListagemAluno telaLista = new ListagemAluno(this.listaAlunos);
         telaLista.setVisible(true);
         telaLista.setLocationRelativeTo(this);
     }//GEN-LAST:event_botaoListaActionPerformed
+
+    private void cadastroMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroMatriculaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cadastroMatriculaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -474,6 +493,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private javax.swing.JButton botaoLista;
     private javax.swing.JFormattedTextField cadastroCPF;
     private javax.swing.JFormattedTextField cadastroDataNasc;
+    private javax.swing.JFormattedTextField cadastroMatricula;
     private javax.swing.JTextField cadastroNome1;
     private javax.swing.JFormattedTextField cadastroTelefone;
     private javax.swing.JLabel jLabel1;
@@ -481,6 +501,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane sPane;
     private javax.swing.JTable tabelaAlunos;
     // End of variables declaration//GEN-END:variables

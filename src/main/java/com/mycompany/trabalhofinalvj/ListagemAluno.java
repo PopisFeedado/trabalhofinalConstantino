@@ -41,8 +41,7 @@ public class ListagemAluno extends javax.swing.JFrame {
         if(lista != null){
             //percorre toda lista de alun e pões ela no sb
             for(Aluno aluno: lista){
-                sb.append(cont1+aluno.getMatricula()).append("\n");
-                sb.append(aluno.getNome()).append("\n");
+                sb.append(aluno.getMatricula()).append(",").append(aluno.getNome()).append(",").append(aluno.getIdade()).append("\n");
             }
         }else{
             sb.append("Não há lista");
