@@ -13,6 +13,7 @@ import java.util.*;
  * @author franc
  */
 public class ListagemAluno extends javax.swing.JFrame {
+    private final SimpleDateFormat dataAjustada = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Creates new form ListagemAluno
@@ -32,16 +33,22 @@ public class ListagemAluno extends javax.swing.JFrame {
     
     public ListagemAluno() {
         initComponents();
+        //quando clica no x ele fecha apenas a listagem 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
     
     private void preencheListagem(List<Aluno> lista){
         StringBuilder sb = new StringBuilder();
-        sb.append("---------Lista de alunos --------- \n");
-        sb.append("==================================\n\n");
+        sb.append("");
+        sb.append("\n\n");
         if(lista != null){
             //percorre toda lista de alun e pões ela no sb
             for(Aluno aluno: lista){
-                sb.append(aluno.getMatricula()).append(",").append(aluno.getNome()).append(",").append(aluno.getIdade()).append("\n");
+                String dataFormatada = aluno.getDataNasc() != null ? dataAjustada.format(aluno.getDataNasc()) : "";
+                String linha = "Mat:"+aluno.getMatricula() + ", Nome:" + aluno.getNome() + ", Idade:" +aluno.getIdade() + ", Nasc:" +dataFormatada + ", Cpf:" + aluno.getCpf()+", Tel:" + aluno.getTelefone()+"\n";
+               
+        
+                sb.append(linha);
             }
         }else{
             sb.append("Não há lista");
@@ -63,7 +70,7 @@ public class ListagemAluno extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtListagem = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         txtListagem.setColumns(20);
         txtListagem.setRows(5);

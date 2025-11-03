@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 /**
  *
@@ -26,6 +28,8 @@ public class CadastroAluno extends javax.swing.JFrame {
     public CadastroAluno() {
         initComponents();
         this.listaAlunos = new ArrayList<>();
+        //le todos os arquivos e adiciona eles na lista
+        lercsv("ListagemAlunos.txt",listaAlunos);
         //gera a tabela
         configTabela();
         //intera na lista e preenche
@@ -83,6 +87,41 @@ public class CadastroAluno extends javax.swing.JFrame {
         
         
     }
+    //função que vai ser usada quando iniciar as funções a fim de ler os dados 
+    private void lercsv(String nome,List<Aluno> lista){
+        
+        String linha="";
+        String separador= ",";
+        //inicia um bloco de texto que contém oq esta escrito no txt
+        try (BufferedReader br = new BufferedReader(new FileReader(nome))){
+         int posicaolinha=1;
+         //passa para cada linha até ela ser nula 
+         while((linha=br.readLine())!=null){
+             //copia cada linha para um vetor e inicalizaa os alunos de acordo coma  sua posição
+             String[] dados = linha.split(separador);
+             Aluno alunoadd= new Aluno();
+              //[nome,cpf,data,fone,mat]adicionar
+                //[matricula,nome,idade,data,cpf,telefone]salvar csv
+             alunoadd= adicionarAluno(dados[1],dados[4],dados[3],dados[5],dados[1]);
+             lista.add(alunoadd);
+             
+             
+            posicaolinha++; 
+             
+         }
+            
+            
+        
+        } catch (IOException e) {
+            // Imprime o erro caso o arquivo não seja encontrado ou haja outro problema de I/O
+            e.printStackTrace();
+    }
+                    
+    }      
+            
+            
+            
+             
     
     private void salvarCSV(List<Aluno> lista){
         try(FileWriter fw = new FileWriter("ListagemAlunos.txt", false);
@@ -90,8 +129,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         {
             for (Aluno aluno: listaAlunos){
                 String dataFormatada = aluno.getDataNasc() != null ? dataAjustada.format(aluno.getDataNasc()) : "";
-                String linha = cont + "," + aluno.getMatricula() + "," + aluno.getNome() + "," +aluno.getIdade() + "," +dataFormatada + "," + aluno.getCpf();
-                cont++;
+                String linha = aluno.getMatricula() + "," + aluno.getNome() + "," +aluno.getIdade() + "," +dataFormatada + "," + aluno.getCpf()+"," + aluno.getTelefone();
+               
                 bw.write(linha);
                 bw.newLine();
             }
@@ -109,6 +148,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         novoAluno.setDataNasc(dataNascAluno);
         novoAluno.setTelefone(foneAluno);
         novoAluno.setMatricula(Integer.parseInt(matAluno.trim()));
+        novoAluno.setIdade(novoAluno.getDataNasc());
         return novoAluno;
     }
     
@@ -355,7 +395,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         //Cria o novo objeto, do tipo aluno
         Aluno novoAluno = new Aluno();
         novoAluno = adicionarAluno(cadastroNome1.getText(),cadastroCPF.getText(),cadastroDataNasc.getText(),cadastroTelefone.getText(),cadastroMatricula.getText());
-        novoAluno.setIdade(novoAluno.getDataNasc());
+        
         //verifica se a data está no formato correto e informa ao usuário
         if (novoAluno.getDataNasc() == null){
             JOptionPane.showMessageDialog(this,"Dados inválidos, recadastre");
@@ -373,6 +413,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         cadastroCPF.setText("");
         cadastroDataNasc.setText("");
         cadastroTelefone.setText("");
+        cadastroMatricula.setText("");
+        salvarCSV(this.listaAlunos);
         
     }//GEN-LAST:event_botaoConfirmarActionPerformed
 
@@ -408,12 +450,13 @@ public class CadastroAluno extends javax.swing.JFrame {
 
     private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
         //Se possível transformar o IF em uma funcao e chamar no botaoConfirmar e botaoInserir
+        salvarCSV(this.listaAlunos);
         String matriculaBusca = JOptionPane.showInputDialog(this,"Qual posição você deseja inserir o aluno?","Inserir aluno",JOptionPane.PLAIN_MESSAGE);
         int posicao = Integer.parseInt(matriculaBusca.trim());
         if (posicao >= 0 && posicao <= this.listaAlunos.size()){
             Aluno novoAluno = new Aluno();
             novoAluno = adicionarAluno(cadastroNome1.getText(),cadastroCPF.getText(),cadastroDataNasc.getText(),cadastroTelefone.getText(),cadastroMatricula.getText());
-            novoAluno.setIdade(novoAluno.getDataNasc());
+            
             //verifica se a data está no formato correto e informa ao usuário
             if (novoAluno.getDataNasc() == null){
                 JOptionPane.showMessageDialog(this,"Dados inválidos, recadastre");
@@ -431,6 +474,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             cadastroCPF.setText("");
             cadastroDataNasc.setText("");
             cadastroTelefone.setText("");
+            cadastroMatricula.setText("");
         }else{
             JOptionPane.showMessageDialog(this,"Posição Inválida!");
         }
@@ -438,7 +482,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoInserirActionPerformed
 
     private void botaoListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoListaActionPerformed
-        //chama  atela 
+        //chama  a tela 
         salvarCSV(this.listaAlunos);
         ListagemAluno telaLista = new ListagemAluno(this.listaAlunos);
         telaLista.setVisible(true);
