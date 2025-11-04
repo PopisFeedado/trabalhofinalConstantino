@@ -12,6 +12,10 @@ import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import com.mycompany.trabalhofinalvj.util.HibernateUtil;
+
 /**
  *
  * @author franc
@@ -97,13 +101,14 @@ public class CadastroAluno extends javax.swing.JFrame {
          int posicaolinha=1;
          //passa para cada linha até ela ser nula 
          while((linha=br.readLine())!=null){
-             //copia cada linha para um vetor e inicalizaa os alunos de acordo coma  sua posição
+             //copia cada linha para um vetor e inicaliza os alunos de acordo coma  sua posição
              String[] dados = linha.split(separador);
-             Aluno alunoadd= new Aluno();
-              //[nome,cpf,data,fone,mat]adicionar
-                //[matricula,nome,idade,data,cpf,telefone]salvar csv
-             alunoadd= adicionarAluno(dados[1],dados[4],dados[3],dados[5],dados[1]);
-             lista.add(alunoadd);
+             Aluno alunoAdd= new Aluno();
+              //[nome,cpf,data,fone,mat] - parametros
+              //[matricula,nome,idade,data,cpf,telefone] - salvar csv
+             alunoAdd = adicionarAluno(dados[1],dados[4],dados[3],dados[5],dados[0]);
+             
+             lista.add(alunoAdd);
              
              
             posicaolinha++; 
@@ -395,7 +400,10 @@ public class CadastroAluno extends javax.swing.JFrame {
         //Cria o novo objeto, do tipo aluno
         Aluno novoAluno = new Aluno();
         novoAluno = adicionarAluno(cadastroNome1.getText(),cadastroCPF.getText(),cadastroDataNasc.getText(),cadastroTelefone.getText(),cadastroMatricula.getText());
-        
+        //cria as variaveis p/hibernate
+        Session session = null;
+        Transaction transaction = null;
+
         //verifica se a data está no formato correto e informa ao usuário
         if (novoAluno.getDataNasc() == null){
             JOptionPane.showMessageDialog(this,"Dados inválidos, recadastre");
@@ -403,10 +411,36 @@ public class CadastroAluno extends javax.swing.JFrame {
         if(this.listaAlunos.contains(novoAluno)){
             JOptionPane.showMessageDialog(this,"Aluno já cadastrado");
         }
-        else{
-           listaAlunos.add(novoAluno);
-           JOptionPane.showMessageDialog(this,"Aluno inserido corretamente");
+        try {
+        //Obtem a Session e iniciar Transação
+        session = HibernateUtil.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+
+        //Salva o objeto criado no Banco de Dados
+        session.save(novoAluno);
+
+        //Confirmar a Transação
+        transaction.commit();
+
+        //Lógica de UI e Memória
+        listaAlunos.add(novoAluno); // Adiciona na lista em memória
+        JOptionPane.showMessageDialog(this, "Aluno inserido e salvo no BD corretamente!");
+
+    } catch (Exception ex) {
+        //Se o BD falhar, desfaz a transação
+        if (transaction != null) {
+            transaction.rollback();
         }
+        JOptionPane.showMessageDialog(this, "Erro ao salvar no BD: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        //Imprime o erro completo no consoleS
+        ex.printStackTrace();
+
+    } finally {
+        //Fechar a Sessão
+        if (session != null) {
+            session.close();
+        }
+    }
         preencheTabela();
         //responsável por limpar os campos após a coleta de dados do aluno.
         cadastroNome1.setText("");

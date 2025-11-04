@@ -9,24 +9,35 @@ import java.time.ZoneId;
 import java.time.Period;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import javax.persistence.*;
 /**
  *
  * @author franc
  */
+@Entity
+@Table(name = "aluno")
+//para identificar a tabela aluno.
 public class Aluno {
     //Crie um Java Bean Aluno com os seguintes atributos: matrícula, nome, idade, dataNascimento onde
 //deve ser do tipo date e armazenar no nosso formato dd/mm/yyyy, telefone, CPF. Deve possuir os
 //métodos getters e setters de cada atributo.
     //atributos
+    @Id
     private int matricula;
     private String nome;
     private int idade;
+    @Temporal(TemporalType.DATE)
     private Date dataNasc;
+    
     private String cpf;
     private String telefone;
     
     //calcula a idade a ser utilizada no getIdade
     public static int alunoIdade(Date dataNasc){
+        // Se a data de nascimento for nula, retorna 0;
+        if (dataNasc == null) {
+            return 0; 
+        }
         //pega a data de nascimento do aluno e converte para LocalDate
         LocalDate dataNascimento = dataNasc.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         //pega a data atual do computador

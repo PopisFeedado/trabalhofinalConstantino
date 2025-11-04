@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.mycompany.trabalhofinalvj.Aluno" table="ALUNOS">
+        
+        <id name="matricula" column="MATRICULA">
+            <generator class="assigned"/>
+        </id>
+        
+        <property name="nome" column="NOME" type="string"/>
+        
+        <property name="idade" column="IDADE" type="int"/>
+        
+        <property name="dataNasc" column="DATA_NASCIMENTO" type="date"/>
+        
+        <property name="cpf" column="CPF" type="string"/>
+        
+        <property name="telefone" column="TELEFONE" type="string"/>
+        
+        </class>
+</hibernate-mapping>
