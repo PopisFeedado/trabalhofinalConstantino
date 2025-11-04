@@ -101,15 +101,15 @@ public class CadastroAluno extends javax.swing.JFrame {
          int posicaolinha=1;
          //passa para cada linha até ela ser nula 
          while((linha=br.readLine())!=null){
-             //copia cada linha para um vetor e inicaliza os alunos de acordo coma  sua posição
-             String[] dados = linha.split(separador);
-             Aluno alunoAdd= new Aluno();
-              //[nome,cpf,data,fone,mat] - parametros
-              //[matricula,nome,idade,data,cpf,telefone] - salvar csv
-             alunoAdd = adicionarAluno(dados[1],dados[4],dados[3],dados[5],dados[0]);
+            //copia cada linha para um vetor e inicaliza os alunos de acordo coma  sua posição
+            String[] dados = linha.split(separador);
+            Aluno alunoAdd= new Aluno();
+              //[nome,cpf,data,fone,mat] - parametros da funlão adicionarAluno
+              //[matricula - 0,nome - 1,idade - 2,data - 3,cpf - 4,telefone - 5] - arquivo CSV salva exatamente assim
+              //A cada , ele identificará um dado a ser armazenado, então escolheremos a ordem 1,4,3,5,0;
+            alunoAdd = adicionarAluno(dados[1],dados[4],dados[3],dados[5],dados[0]);
              
-             lista.add(alunoAdd);
-             
+            lista.add(alunoAdd);
              
             posicaolinha++; 
              
@@ -483,10 +483,14 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoIdadeActionPerformed
 
     private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
-        //Se possível transformar o IF em uma funcao e chamar no botaoConfirmar e botaoInserir
+        //É preferível a gente fazer um looping para o BD ler a lista após a inserção do arquivo CSV, ou ele adiciona conforme os alunos são adicionados pelo programa?
         salvarCSV(this.listaAlunos);
         String matriculaBusca = JOptionPane.showInputDialog(this,"Qual posição você deseja inserir o aluno?","Inserir aluno",JOptionPane.PLAIN_MESSAGE);
         int posicao = Integer.parseInt(matriculaBusca.trim());
+        
+        Session session = null;
+        Transaction transaction = null;
+        
         if (posicao >= 0 && posicao <= this.listaAlunos.size()){
             Aluno novoAluno = new Aluno();
             novoAluno = adicionarAluno(cadastroNome1.getText(),cadastroCPF.getText(),cadastroDataNasc.getText(),cadastroTelefone.getText(),cadastroMatricula.getText());
@@ -498,10 +502,35 @@ public class CadastroAluno extends javax.swing.JFrame {
             if(this.listaAlunos.contains(novoAluno)){
                 JOptionPane.showMessageDialog(this,"Aluno já cadastrado");
             }
-            else{
-               listaAlunos.add(posicao,novoAluno);
-               JOptionPane.showMessageDialog(this,"Aluno inserido corretamente");
+            try{
+                //Obtem a Session(Principal interface p/interagir c/Hibernate/Banco e inicia Transação(serve pra garantir a integridade dos dados )
+                session = HibernateUtil.getSessionFactory().openSession();
+                transaction = session.beginTransaction();
+
+                //Salva o objeto criado no Banco de Dados
+                session.save(novoAluno);
+
+                //Confirmar a Transação
+                transaction.commit();
+
+                //Lógica de UI e Memória
+                listaAlunos.add(novoAluno); // Adiciona na lista em memória
+                JOptionPane.showMessageDialog(this, "Aluno inserido e salvo no BD corretamente!");
+
+            }catch(Exception ex){
+                //Se durante a execução do commit falhar, ele desfaz a transação - Rollback é contrário de commit
+                if(transaction != null){
+                    transaction.rollback();
+                }
+                JOptionPane.showMessageDialog(this, "Erro ao salvar no BD: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+
+                }finally{
+                //Caso a sessão foi iniciada (contrario de nao ser iniciada ou ocorrer um erro antes dela) ele fecha ela.
+                if(session != null){
+                    session.close();
+                }
             }
+            
             preencheTabela();
             //responsável por limpar os campos após a coleta de dados do aluno.
             cadastroNome1.setText("");
@@ -509,6 +538,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             cadastroDataNasc.setText("");
             cadastroTelefone.setText("");
             cadastroMatricula.setText("");
+            salvarCSV(this.listaAlunos);
         }else{
             JOptionPane.showMessageDialog(this,"Posição Inválida!");
         }
