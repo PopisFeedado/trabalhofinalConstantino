@@ -63,7 +63,8 @@
                           <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
+                                  <Component id="cadastroMatricula" min="-2" pref="133" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
                                       <Component id="botaoConfirmar" min="-2" pref="86" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="botaoBuscar" min="-2" pref="86" max="-2" attributes="0"/>
@@ -73,8 +74,9 @@
                                       <Component id="botaoInserir" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="botaoLista" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="botaoRemove" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="cadastroMatricula" alignment="0" min="-2" pref="133" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -116,6 +118,7 @@
                   <Component id="botaoIdade" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botaoInserir" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botaoLista" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="botaoRemove" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="sPane" min="-2" pref="142" max="-2" attributes="0"/>
@@ -255,6 +258,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Matricula"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="botaoRemove">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remover Aluno"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoRemoveActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

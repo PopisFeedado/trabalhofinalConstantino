@@ -15,7 +15,8 @@ import java.io.IOException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import com.mycompany.trabalhofinalvj.util.HibernateUtil;
-
+import newpackagedao.AlunoDAO;
+import newpackagedao.RemocaoAlunoDAO;
 /**
  *
  * @author franc
@@ -24,7 +25,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     int cont = 0;
     private List<Aluno> listaAlunos;
     private final SimpleDateFormat dataAjustada = new SimpleDateFormat("dd/MM/yyyy");
-    
+    private RemocaoAlunoDAO AlunoDao;
     /**
      * Creates new form oiii
      */
@@ -38,6 +39,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         configTabela();
         //intera na lista e preenche
         preencheTabela();
+        
+        this.AlunoDao = new RemocaoAlunoDAO();
     }
     //f.verificacaoAlunoNaLista
     public Aluno verificarAluno(int matBusca){
@@ -184,6 +187,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         botaoLista = new javax.swing.JButton();
         cadastroMatricula = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
+        botaoRemove = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -295,6 +299,13 @@ public class CadastroAluno extends javax.swing.JFrame {
 
         jLabel7.setText("Matricula");
 
+        botaoRemove.setText("Remover Aluno");
+        botaoRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoRemoveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -331,6 +342,7 @@ public class CadastroAluno extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
@@ -340,8 +352,9 @@ public class CadastroAluno extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(botaoInserir)
                                         .addGap(18, 18, 18)
-                                        .addComponent(botaoLista))
-                                    .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(botaoLista)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botaoRemove)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -375,7 +388,8 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addComponent(botaoBuscar)
                     .addComponent(botaoIdade)
                     .addComponent(botaoInserir)
-                    .addComponent(botaoLista))
+                    .addComponent(botaoLista)
+                    .addComponent(botaoRemove))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sPane, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -557,6 +571,46 @@ public class CadastroAluno extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cadastroMatriculaActionPerformed
 
+    private void botaoRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoveActionPerformed
+        String matriculaDigitada = JOptionPane.showInputDialog(this, "Digite a matrícula do aluno: ","Remover aluno P/Matrícula",JOptionPane.PLAIN_MESSAGE);
+        Aluno alunoEncontrado = verificarAluno(Integer.parseInt(matriculaDigitada.trim()));
+        String resultado="";
+        //cria as variaveis p/hibernate
+        Session session = null;
+        Transaction transaction = null;
+        if (alunoEncontrado!=null){
+              try {
+        //Obtem a Session e iniciar Transação
+        session = HibernateUtil.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+
+        //Salva o objeto criado no Banco de Dados
+        session.remove(alunoEncontrado);
+
+        //Confirmar a Transação
+        transaction.commit();
+        JOptionPane.showMessageDialog(this, "Aluno removido no BD corretamente!");
+        listaAlunos.remove(alunoEncontrado);
+        salvarCSV(this.listaAlunos);
+
+    } catch (Exception ex) {
+        //Se o BD falhar, desfaz a transação
+        if (transaction != null) {
+            transaction.rollback();
+        }
+        JOptionPane.showMessageDialog(this, "Erro ao remover no BD: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        //Imprime o erro completo no consoleS
+        ex.printStackTrace();
+
+    } finally {
+        //Fechar a Sessão
+        if (session != null) {
+            session.close();
+        }
+    }
+        }
+    }//GEN-LAST:event_botaoRemoveActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -599,6 +653,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private javax.swing.JButton botaoIdade;
     private javax.swing.JButton botaoInserir;
     private javax.swing.JButton botaoLista;
+    private javax.swing.JButton botaoRemove;
     private javax.swing.JFormattedTextField cadastroCPF;
     private javax.swing.JFormattedTextField cadastroDataNasc;
     private javax.swing.JFormattedTextField cadastroMatricula;
