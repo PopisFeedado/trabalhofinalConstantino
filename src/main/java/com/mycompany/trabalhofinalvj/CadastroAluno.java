@@ -34,7 +34,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         initComponents();
         this.listaAlunos = new ArrayList<>();
         //le todos os arquivos e adiciona eles na lista
-        lercsv("ListagemAlunos.txt",listaAlunos);
+        lercsv("ListagemAlunos.txt",listaAlunos);        
         //gera a tabela
         configTabela();
         //intera na lista e preenche
@@ -53,6 +53,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         }
         return alunoEncontrado;
     }
+    
     //funcao que configura a tabela
     private void configTabela(){
         //pega o modelo tabelaAlunos
@@ -127,10 +128,6 @@ public class CadastroAluno extends javax.swing.JFrame {
                     
     }      
             
-            
-            
-             
-    
     private void salvarCSV(List<Aluno> lista){
         try(FileWriter fw = new FileWriter("ListagemAlunos.txt", false);
             BufferedWriter bw = new BufferedWriter(fw))
@@ -489,8 +486,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         if (!this.listaAlunos.isEmpty()){
             Aluno maisNovo = Collections.min(this.listaAlunos, Comparator.comparingInt(Aluno::getIdade));
             Aluno maisVelho = Collections.max(this.listaAlunos, Comparator.comparingInt(Aluno::getIdade));
-            JOptionPane.showMessageDialog(this,"Aluno mais novo: \n Nome: " + maisNovo.getNome() + "\n CPF: " + maisNovo.getCpf()+ "\n Telefone: " + maisNovo.getTelefone());
-            JOptionPane.showMessageDialog(this,"Aluno mais velho: \n Nome: " + maisVelho.getNome() + "\n CPF: " + maisVelho.getCpf()+ "\n Telefone: " + maisVelho.getTelefone());
+            JOptionPane.showMessageDialog(this,"Aluno mais novo tem" + maisNovo.getIdade() + " Anos. \n Nome: " + maisNovo.getNome() + "\n CPF: " + maisNovo.getCpf()+ "\n Telefone: " + maisNovo.getTelefone());
+            JOptionPane.showMessageDialog(this,"Aluno mais velho tem" + maisVelho.getIdade() + " Anos. \n Nome: " + maisVelho.getNome() + "\n CPF: " + maisVelho.getCpf()+ "\n Telefone: " + maisVelho.getTelefone());
         }
         
          
@@ -528,7 +525,7 @@ public class CadastroAluno extends javax.swing.JFrame {
                 transaction.commit();
 
                 //Lógica de UI e Memória
-                listaAlunos.add(novoAluno); // Adiciona na lista em memória
+                listaAlunos.add(posicao,novoAluno); // Adiciona na lista em memória
                 JOptionPane.showMessageDialog(this, "Aluno inserido e salvo no BD corretamente!");
 
             }catch(Exception ex){
@@ -592,6 +589,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Aluno removido no BD corretamente!");
         listaAlunos.remove(alunoEncontrado);
         salvarCSV(this.listaAlunos);
+        
 
     } catch (Exception ex) {
         //Se o BD falhar, desfaz a transação
@@ -609,6 +607,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         }
     }
         }
+        preencheTabela();
     }//GEN-LAST:event_botaoRemoveActionPerformed
 
     /**

@@ -15,8 +15,7 @@ import javax.swing.JOptionPane;
 public class RemocaoAlunoDAO implements AlunoDAO {
     public List removerAluno(List alunos, Aluno a){
         if(alunos.contains(a)){
-            alunos.remove(a);
-           
+            alunos.remove(a);         
         }
         
         
