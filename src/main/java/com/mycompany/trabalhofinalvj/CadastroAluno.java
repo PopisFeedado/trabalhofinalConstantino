@@ -185,6 +185,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         cadastroMatricula = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         botaoRemove = new javax.swing.JButton();
+        botaoAtualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -303,6 +304,13 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoAtualizar.setText("Atualizar");
+        botaoAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoAtualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -335,8 +343,10 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(118, 118, 118))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -350,6 +360,8 @@ public class CadastroAluno extends javax.swing.JFrame {
                                         .addComponent(botaoInserir)
                                         .addGap(18, 18, 18)
                                         .addComponent(botaoLista)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(botaoAtualizar)
                                         .addGap(18, 18, 18)
                                         .addComponent(botaoRemove)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
@@ -386,6 +398,7 @@ public class CadastroAluno extends javax.swing.JFrame {
                     .addComponent(botaoIdade)
                     .addComponent(botaoInserir)
                     .addComponent(botaoLista)
+                    .addComponent(botaoAtualizar)
                     .addComponent(botaoRemove))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sPane, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -610,6 +623,90 @@ public class CadastroAluno extends javax.swing.JFrame {
         preencheTabela();
     }//GEN-LAST:event_botaoRemoveActionPerformed
 
+    private void botaoAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAtualizarActionPerformed
+    
+    Session session = null;
+    Transaction transaction = null;
+     
+    String matricula = JOptionPane.showInputDialog(this, "Digite a matricula do aluno:");
+
+    String nome = JOptionPane.showInputDialog(this, "Digite o novo nome:"); 
+    
+    String data = JOptionPane.showInputDialog(this, "Digite a nova data:");
+
+    String telefone = JOptionPane.showInputDialog(this, "Digite o novo telefone:");
+    
+    String cpf = JOptionPane.showInputDialog(this, "Digite o novo cpf:");
+    
+    Aluno alunoEncontrado = verificarAluno(Integer.parseInt(matricula.trim()));
+    if (alunoEncontrado!=null){
+              try {
+        //Obtem a Session e iniciar Transação
+        session = HibernateUtil.getSessionFactory().openSession();
+        transaction = session.beginTransaction();
+        
+        //acessar no bd o objeto aluno a ser modigicado
+        Aluno alunoatt=(Aluno) session.get(Aluno.class,matricula);
+        alunoatt=adicionarAluno(nome,cpf,data,telefone,matricula);
+        alunoEncontrado=adicionarAluno(nome,cpf,data,telefone,matricula);
+        session.update(alunoatt);
+ 
+        
+
+        //Confirmar a Transação
+        transaction.commit();
+        JOptionPane.showMessageDialog(this, "Aluno atualizao no BD!");
+   
+        salvarCSV(this.listaAlunos);
+        
+
+    } catch (Exception ex) {
+        //Se o BD falhar, desfaz a transação
+        if (transaction != null) {
+            transaction.rollback();
+        }
+        JOptionPane.showMessageDialog(this, "Erro ao atualizar no BD: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        //Imprime o erro completo no consoleS
+        ex.printStackTrace();
+
+    } finally {
+        //Fechar a Sessão
+        if (session != null) {
+            session.close();
+        }
+    }
+        }
+        preencheTabela();
+    
+        
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_botaoAtualizarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -647,6 +744,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoAtualizar;
     private javax.swing.JButton botaoBuscar;
     private javax.swing.JButton botaoConfirmar;
     private javax.swing.JButton botaoIdade;

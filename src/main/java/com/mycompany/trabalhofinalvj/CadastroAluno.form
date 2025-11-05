@@ -59,8 +59,11 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="sPane" alignment="0" pref="699" max="32767" attributes="0"/>
-                          <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+                          <Component id="sPane" alignment="0" pref="779" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel7" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="cadastroMatricula" min="-2" pref="133" max="-2" attributes="0"/>
@@ -74,6 +77,8 @@
                                       <Component id="botaoInserir" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="botaoLista" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="botaoAtualizar" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="botaoRemove" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -118,6 +123,7 @@
                   <Component id="botaoIdade" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botaoInserir" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botaoLista" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="botaoAtualizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botaoRemove" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -265,6 +271,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoRemoveActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="botaoAtualizar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Atualizar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoAtualizarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
