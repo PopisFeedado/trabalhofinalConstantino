@@ -672,9 +672,9 @@ public class CadastroAluno extends javax.swing.JFrame {
         alunoatt.setIdade(alunoatt.getDataNasc());
         alunoatt.setNome(nome);
         alunoatt.setTelefone(telefone);
-        Aluno alunoEncontrado=adicionarAluno(nome,cpf,data,telefone,matricula);
+
         session.update(alunoatt);
-        listaAlunos.set(alunoIndice ,alunoEncontrado);
+        listaAlunos.set(alunoIndice ,alunoatt);
         //Confirmar a Transação
         transaction.commit();
         JOptionPane.showMessageDialog(this, "Aluno atualizao no BD!");
