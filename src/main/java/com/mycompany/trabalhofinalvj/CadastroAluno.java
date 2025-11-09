@@ -17,6 +17,8 @@ import org.hibernate.Transaction;
 import com.mycompany.trabalhofinalvj.util.HibernateUtil;
 import newpackagedao.AlunoDAO;
 import newpackagedao.RemocaoAlunoDAO;
+import java.awt.Color;
+
 /**
  *
  * @author franc
@@ -32,6 +34,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     //construtor
     public CadastroAluno() {
         initComponents();
+        this.getContentPane().setBackground(Color.getHSBColor(0.5f, 0.1f, 0.9f));
         this.listaAlunos = new ArrayList<>();
         //le todos os arquivos e adiciona eles na lista
         lercsv("ListagemAlunos.txt",listaAlunos);        
@@ -53,20 +56,17 @@ public class CadastroAluno extends javax.swing.JFrame {
         }
         return alunoEncontrado;
     }
+    
     public int indiceAluno(int matBusca){
-        int a=0;
+        int a = 0;
         Aluno alunoEncontrado = null;
-        for(Aluno aluno : this.listaAlunos){
+        for(Aluno aluno : this.listaAlunos){    
+            if(aluno.getMatricula() == matBusca){  
+                return a;
+            }
             a++;
-            if(aluno.getMatricula() == matBusca){
-                
-                break;
-            }
-            if(aluno.getMatricula() != matBusca){
-                a=-999;//retona999 pois estamos apenas incrementando
-            }
         }
-        return a;
+        return -999;
     }
     
     
@@ -208,6 +208,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         botaoAtualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Trabalho Final");
+        setBackground(new java.awt.Color(255, 255, 51));
 
         jLabel1.setText("Cadastro");
 
@@ -255,6 +257,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoConfirmar.setBackground(new java.awt.Color(153, 102, 255));
         botaoConfirmar.setText("Confirmar");
         botaoConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,6 +271,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoBuscar.setBackground(new java.awt.Color(153, 102, 255));
         botaoBuscar.setText("Buscar");
         botaoBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -275,6 +279,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoIdade.setBackground(new java.awt.Color(153, 102, 255));
         botaoIdade.setText("Listar por Idade");
         botaoIdade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -282,6 +287,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoInserir.setBackground(new java.awt.Color(153, 102, 255));
         botaoInserir.setText("Inserir Em...");
         botaoInserir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -302,6 +308,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         ));
         sPane.setViewportView(tabelaAlunos);
 
+        botaoLista.setBackground(new java.awt.Color(153, 102, 255));
         botaoLista.setText("Listagem");
         botaoLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -317,6 +324,7 @@ public class CadastroAluno extends javax.swing.JFrame {
 
         jLabel7.setText("Matricula");
 
+        botaoRemove.setBackground(new java.awt.Color(153, 102, 255));
         botaoRemove.setText("Remover Aluno");
         botaoRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,6 +332,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        botaoAtualizar.setBackground(new java.awt.Color(153, 102, 255));
         botaoAtualizar.setText("Atualizar");
         botaoAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -336,92 +345,86 @@ public class CadastroAluno extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cadastroDataNasc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cadastroTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cadastroNome1)
+                                .addGap(22, 22, 22))
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cadastroDataNasc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cadastroTelefone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cadastroCPF, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(173, 173, 173)
-                                .addComponent(jLabel1)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(167, 167, 167)
+                                .addComponent(jLabel1))
+                            .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sPane))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(118, 118, 118))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(botaoConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botaoIdade)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botaoInserir)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botaoLista)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botaoAtualizar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(botaoRemove)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                            .addComponent(botaoRemove, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(botaoConfirmar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(botaoInserir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botaoLista, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botaoIdade, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botaoAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(295, 295, 295)
+                        .addComponent(botaoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {botaoAtualizar, botaoConfirmar, botaoInserir, botaoLista, botaoRemove});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sPane, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastroDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastroTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastroCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(botaoInserir)
+                        .addComponent(botaoConfirmar))
+                    .addComponent(botaoIdade))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cadastroNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cadastroDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cadastroTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cadastroCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cadastroMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoConfirmar)
-                    .addComponent(botaoBuscar)
-                    .addComponent(botaoIdade)
-                    .addComponent(botaoInserir)
                     .addComponent(botaoLista)
                     .addComponent(botaoAtualizar)
+                    .addComponent(botaoBuscar)
                     .addComponent(botaoRemove))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sPane, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -591,7 +594,6 @@ public class CadastroAluno extends javax.swing.JFrame {
 
     private void botaoListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoListaActionPerformed
         //chama  a tela 
-        salvarCSV(this.listaAlunos);
         ListagemAluno telaLista = new ListagemAluno(this.listaAlunos);
         telaLista.setVisible(true);
         telaLista.setLocationRelativeTo(this);
@@ -604,7 +606,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     private void botaoRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoveActionPerformed
         String matriculaDigitada = JOptionPane.showInputDialog(this, "Digite a matrícula do aluno: ","Remover aluno P/Matrícula",JOptionPane.PLAIN_MESSAGE);
         Aluno alunoEncontrado = verificarAluno(Integer.parseInt(matriculaDigitada.trim()));
-        String resultado="";
+        String resultado = "";
         //cria as variaveis p/hibernate
         Session session = null;
         Transaction transaction = null;
@@ -620,7 +622,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         //Confirmar a Transação
         transaction.commit();
         JOptionPane.showMessageDialog(this, "Aluno removido no BD corretamente!");
-        listaAlunos.remove(alunoEncontrado);
+        listaAlunos = AlunoDao.removerAluno(listaAlunos, alunoEncontrado);
         salvarCSV(this.listaAlunos);
         
 
@@ -649,24 +651,20 @@ public class CadastroAluno extends javax.swing.JFrame {
     Transaction transaction = null;
      
     String matricula = JOptionPane.showInputDialog(this, "Digite a matricula do aluno:");
-
     String nome = JOptionPane.showInputDialog(this, "Digite o novo nome:"); 
-    
     String data = JOptionPane.showInputDialog(this, "Digite a nova data:");
-
     String telefone = JOptionPane.showInputDialog(this, "Digite o novo telefone:");
-    
     String cpf = JOptionPane.showInputDialog(this, "Digite o novo cpf:");
     
     int alunoIndice = indiceAluno(Integer.parseInt(matricula.trim()));
-    if (alunoIndice!=-999){
-              try {
+    if (alunoIndice != -999){
+        try {
         //Obtem a Session e iniciar Transação
         session = HibernateUtil.getSessionFactory().openSession();
         transaction = session.beginTransaction();
         
         //acessar no bd o objeto aluno a ser modigicado
-        Aluno alunoatt=(Aluno) session.get(Aluno.class,Integer.parseInt(matricula.trim()));
+        Aluno alunoatt = (Aluno) session.get(Aluno.class,Integer.parseInt(matricula.trim()));
         alunoatt.setCpf(cpf);
         alunoatt.setDataNasc(data);
         alunoatt.setIdade(alunoatt.getDataNasc());
@@ -677,7 +675,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         listaAlunos.set(alunoIndice ,alunoatt);
         //Confirmar a Transação
         transaction.commit();
-        JOptionPane.showMessageDialog(this, "Aluno atualizao no BD!");
+        JOptionPane.showMessageDialog(this, "Aluno atualizado no BD!");
    
         salvarCSV(this.listaAlunos);
         
@@ -731,7 +729,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable(){
             public void run() {
                 new CadastroAluno().setVisible(true);
             }

@@ -17,11 +17,6 @@ public class RemocaoAlunoDAO implements AlunoDAO {
         if(alunos.contains(a)){
             alunos.remove(a);         
         }
-        
-        
-        
-        
       return alunos; 
-    }
-    
+    }  
 }

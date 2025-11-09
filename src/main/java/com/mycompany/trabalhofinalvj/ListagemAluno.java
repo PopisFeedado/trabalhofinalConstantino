@@ -40,15 +40,17 @@ public class ListagemAluno extends javax.swing.JFrame {
     private void preencheListagem(List<Aluno> lista){
         StringBuilder sb = new StringBuilder();
         sb.append("");
-        sb.append("\n\n");
         if(lista != null){
             //percorre toda lista de alun e pões ela no sb
             for(Aluno aluno: lista){
+                String pLinha = "\n";
                 String dataFormatada = aluno.getDataNasc() != null ? dataAjustada.format(aluno.getDataNasc()) : "";
-                String linha = "Mat:"+aluno.getMatricula() + ", Nome:" + aluno.getNome() + ", Idade:" +aluno.getIdade() + ", Nasc:" +dataFormatada + ", Cpf:" + aluno.getCpf()+", Tel:" + aluno.getTelefone()+"\n";
-               
-        
+                String separa = "========================================================================== \n";
+                String linha = " Mat:"+aluno.getMatricula() + "\n Nome:" + aluno.getNome() + "\n Idade:" +aluno.getIdade() + "\n Nasc:" +dataFormatada + "\n Cpf:" + aluno.getCpf()+"\n Tel:" + aluno.getTelefone()+"\n";
+
                 sb.append(linha);
+                sb.append(separa);
+                
             }
         }else{
             sb.append("Não há lista");
@@ -69,26 +71,40 @@ public class ListagemAluno extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         txtListagem = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        txtListagem.setEditable(false);
         txtListagem.setColumns(20);
         txtListagem.setRows(5);
-        txtListagem.setText("                   TxtAreaListagem\n");
+        txtListagem.setText("                                                                            \n");
         jScrollPane1.setViewportView(txtListagem);
+
+        jLabel1.setText("Listagem de Alunos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(240, 240, 240))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -130,6 +146,7 @@ public class ListagemAluno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtListagem;
     // End of variables declaration//GEN-END:variables
