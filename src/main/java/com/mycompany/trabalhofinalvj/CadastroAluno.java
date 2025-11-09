@@ -2,6 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
+//Área reservada para importação de classes e pacotes Java.
 package com.mycompany.trabalhofinalvj;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -27,24 +29,29 @@ public class CadastroAluno extends javax.swing.JFrame {
     int cont = 0;
     private List<Aluno> listaAlunos;
     private final SimpleDateFormat dataAjustada = new SimpleDateFormat("dd/MM/yyyy");
+
     private RemocaoAlunoDAO AlunoDao;
     /**
      * Creates new form oiii
      */
-    //construtor
+    //Construtor do JFrame
     public CadastroAluno() {
+        //metodo do netBeans que inicializa os componentes da tela
         initComponents();
+        //Muda a cor da tela
         this.getContentPane().setBackground(Color.getHSBColor(0.5f, 0.1f, 0.9f));
+        //Cria a lista de alunos
         this.listaAlunos = new ArrayList<>();
-        //le todos os arquivos e adiciona eles na lista
+        //le o arquivo csv e adiciona os alunos na lista
         lercsv("ListagemAlunos.txt",listaAlunos);        
         //gera a tabela
         configTabela();
-        //intera na lista e preenche
+        //intera na lista e preenche a tabela
         preencheTabela();
-        
+        //cria o AlunoDao
         this.AlunoDao = new RemocaoAlunoDAO();
     }
+    
     //f.verificacaoAlunoNaLista
     public Aluno verificarAluno(int matBusca){
         Aluno alunoEncontrado = null;
@@ -84,6 +91,7 @@ public class CadastroAluno extends javax.swing.JFrame {
         modelo.setColumnIdentifiers(nomeColunas);
         modelo.setRowCount(0);//inicia tabela vazia
     }
+    
     //f.preenche a tabela
     private void preencheTabela(){
         //novamente pega o modelo tabelaAlunos
@@ -149,6 +157,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }      
             
     private void salvarCSV(List<Aluno> lista){
+        //tenta abrir o arquivo listagemAluno.txt
         try(FileWriter fw = new FileWriter("ListagemAlunos.txt", false);
             BufferedWriter bw = new BufferedWriter(fw))
         {
@@ -164,7 +173,7 @@ public class CadastroAluno extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Erro!");
         }
     }
-    
+    //Usa o setters da classe aluno para modificar um objeto
     public static Aluno adicionarAluno(String nomeAluno, String cpfAluno, String dataNascAluno, String foneAluno, String matAluno){
         Aluno novoAluno = new Aluno();
         //Pega os valores passados em cada textField, que e são atribuidos ao novo objeto criado
@@ -316,6 +325,11 @@ public class CadastroAluno extends javax.swing.JFrame {
             }
         });
 
+        try {
+            cadastroMatricula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("######")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         cadastroMatricula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cadastroMatriculaActionPerformed(evt);
@@ -420,11 +434,12 @@ public class CadastroAluno extends javax.swing.JFrame {
                         .addComponent(botaoConfirmar))
                     .addComponent(botaoIdade))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botaoLista)
-                    .addComponent(botaoAtualizar)
-                    .addComponent(botaoBuscar)
-                    .addComponent(botaoRemove))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(botaoAtualizar)
+                        .addComponent(botaoBuscar)
+                        .addComponent(botaoRemove)))
                 .addContainerGap())
         );
 
@@ -530,7 +545,7 @@ public class CadastroAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoIdadeActionPerformed
 
     private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
-        //É preferível a gente fazer um looping para o BD ler a lista após a inserção do arquivo CSV, ou ele adiciona conforme os alunos são adicionados pelo programa?
+
         salvarCSV(this.listaAlunos);
         String matriculaBusca = JOptionPane.showInputDialog(this,"Qual posição você deseja inserir o aluno?","Inserir aluno",JOptionPane.PLAIN_MESSAGE);
         int posicao = Integer.parseInt(matriculaBusca.trim());
@@ -652,7 +667,7 @@ public class CadastroAluno extends javax.swing.JFrame {
      
     String matricula = JOptionPane.showInputDialog(this, "Digite a matricula do aluno:");
     String nome = JOptionPane.showInputDialog(this, "Digite o novo nome:"); 
-    String data = JOptionPane.showInputDialog(this, "Digite a nova data:");
+    String data = JOptionPane.showInputDialog(this, "Digite a nova data(dd/MM/yyyy):  ");
     String telefone = JOptionPane.showInputDialog(this, "Digite o novo telefone:");
     String cpf = JOptionPane.showInputDialog(this, "Digite o novo cpf:");
     
@@ -663,8 +678,8 @@ public class CadastroAluno extends javax.swing.JFrame {
         session = HibernateUtil.getSessionFactory().openSession();
         transaction = session.beginTransaction();
         
-        //acessar no bd o objeto aluno a ser modigicado
-        Aluno alunoatt = (Aluno) session.get(Aluno.class,Integer.parseInt(matricula.trim()));
+        //acessar no bd o objeto aluno a ser modificado
+        Aluno alunoatt = (Aluno)session.get(Aluno.class,Integer.parseInt(matricula.trim()));
         alunoatt.setCpf(cpf);
         alunoatt.setDataNasc(data);
         alunoatt.setIdade(alunoatt.getDataNasc());
