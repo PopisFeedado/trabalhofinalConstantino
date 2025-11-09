@@ -53,6 +53,26 @@ public class CadastroAluno extends javax.swing.JFrame {
         }
         return alunoEncontrado;
     }
+    public int indiceAluno(int matBusca){
+        int a=0;
+        Aluno alunoEncontrado = null;
+        for(Aluno aluno : this.listaAlunos){
+            a++;
+            if(aluno.getMatricula() == matBusca){
+                
+                break;
+            }
+            if(aluno.getMatricula() != matBusca){
+                a=-999;//retona999 pois estamos apenas incrementando
+            }
+        }
+        return a;
+    }
+    
+    
+    
+    
+    
     
     //funcao que configura a tabela
     private void configTabela(){
@@ -638,28 +658,29 @@ public class CadastroAluno extends javax.swing.JFrame {
     
     String cpf = JOptionPane.showInputDialog(this, "Digite o novo cpf:");
     
-    Aluno alunoEncontrado = verificarAluno(Integer.parseInt(matricula.trim()));
-    if (alunoEncontrado!=null){
+    int alunoIndice = indiceAluno(Integer.parseInt(matricula.trim()));
+    if (alunoIndice!=-999){
               try {
         //Obtem a Session e iniciar Transação
         session = HibernateUtil.getSessionFactory().openSession();
         transaction = session.beginTransaction();
         
         //acessar no bd o objeto aluno a ser modigicado
-        Aluno alunoatt=(Aluno) session.get(Aluno.class,matricula);
-        alunoatt=adicionarAluno(nome,cpf,data,telefone,matricula);
-        alunoEncontrado=adicionarAluno(nome,cpf,data,telefone,matricula);
+        Aluno alunoatt=(Aluno) session.get(Aluno.class,Integer.parseInt(matricula.trim()));
+        alunoatt.setCpf(cpf);
+        alunoatt.setDataNasc(data);
+        alunoatt.setIdade(alunoatt.getDataNasc());
+        alunoatt.setNome(nome);
+        alunoatt.setTelefone(telefone);
+        Aluno alunoEncontrado=adicionarAluno(nome,cpf,data,telefone,matricula);
         session.update(alunoatt);
- 
-        
-
+        listaAlunos.set(alunoIndice ,alunoEncontrado);
         //Confirmar a Transação
         transaction.commit();
         JOptionPane.showMessageDialog(this, "Aluno atualizao no BD!");
    
         salvarCSV(this.listaAlunos);
         
-
     } catch (Exception ex) {
         //Se o BD falhar, desfaz a transação
         if (transaction != null) {
@@ -677,34 +698,8 @@ public class CadastroAluno extends javax.swing.JFrame {
     }
         }
         preencheTabela();
-    
-        
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+ 
+     
     }//GEN-LAST:event_botaoAtualizarActionPerformed
 
     /**
