@@ -19,24 +19,26 @@ public class ListagemAluno extends javax.swing.JFrame {
      * Creates new form ListagemAluno
      */
     private List<Aluno> listaDeAlunos;
+    int cont1 = 0;
     //construtor 
     public ListagemAluno(List<Aluno> listaParaExibir) {
-        //passas funções ao criar o obj
+        //passaas funções ao criar o obj
         initComponents();
         //atributo lista do obj
         this.listaDeAlunos = listaParaExibir;
         //escreve na tela os itens dentro da lista
         preencheListagem(listaParaExibir);
         this.setTitle("Lista alunos");
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
     
     public ListagemAluno() {
         initComponents();
+        //quando clica no x ele fecha apenas a listagem 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
     
     private void preencheListagem(List<Aluno> lista){
-        StringBuilder sb = new StringBuilder(); //String mutavel
+        StringBuilder sb = new StringBuilder();
         sb.append("");
         if(lista != null){
             //percorre toda lista de alun e pões ela no sb
@@ -53,8 +55,9 @@ public class ListagemAluno extends javax.swing.JFrame {
         }else{
             sb.append("Não há lista");
         }
-        //coloca a StringBuilder sb na tela 
-        txtListagem.setText(sb.toString()); //txtListagem é a área onde o texto aparece, (JTextArea)
+        //coloca a StringBuilder sb  na tela
+        txtListagem.setText(sb.toString());
+        txtListagem.setCaretPosition(0);
     }
 
     /**
